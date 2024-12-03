@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARYON MODS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Blob-like background effect */
+        .blob {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #00FFFF, #7FFFD4);
+            border-radius: 200%;
+            filter: blur(110px);
+            z-index: -1;
+        }
+
+        .blob1 {
+            top: -150px;
+            left: -150px;
+        }
+
+        .blob2 {
+            bottom: -150px;
+            right: -150px;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(165, 42, 42,); /* Added transparency */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            width: 300px;
+           
+            
+        }
+
+        h1 {
+            font-size: 20px;
+            color: #FF2052;
+            font-weight: Mono;
+        }
+
+        p {
+            font-size: 16px;
+            color: #FF2052;
+            margin-bottom: 20px;
+        }
+
+        .dev {
+            width: 230px;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 30px;
+            border: 2px solid linear-gradient(135deg, #BCD4E6, #0000FF);
+            text-align: center;
+            font-size: 16px;
+            font-style: bold;
+            color: black;
+            background-color: rgba(34, 34, 34, 0.1); 
+        }
+
+        button {
+            width: 200px;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-result {
+            background-color: #0000FF;
+        }
+
+        .btn-telegram {
+            background-color: #0000FF;
+        }
+
+        .btn-result:hover, .btn-telegram:hover {
+            background-color: #0000FF;
+        }
+    </style>
+</head>
+<body>
+    <!-- Blob shapes for background -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+
+    <div class="container">
+        <h1>CARYON MODS</h1>
+        <p>CARYON MODS</p>
+        <div class="dev">
+        <span id="minutes">00</span>:<span id="seconds">60</span>
+        </div>
+        <div class="dev">
+        <div class="id-number" id="period-number">Wait For Period</div>
+        </div>
+        <div class="dev">
+        <div id="result" class="result"></div>
+        
+        </div>
+
+        <button class="btn-telegram" onclick="window.location.href='https://t.me/freehackwithjemsh';">CARYON CHANNEL</button>
+    </div>
+
+
+  <script>
+    function getRandomPrediction() {
+      const options = ["BIG", "SMALL","SMALL","BIG","SMALL","BIG","BIG","SMALL","BIG","SMALL"];
+      const randomIndex = Math.floor(Math.random() * options.length);
+      return options[randomIndex];
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Check localStorage for existing prediction
+      const storedPrediction = localStorage.getItem('prediction');
+      document.getElementById('result').textContent = storedPrediction ? storedPrediction : getRandomPrediction();
+
+      fetchCurrentGameIssue();
+      fetchPreviousResults();
+      setInterval(fetchPreviousResults, 30000);
+      setTimeout(() => { location.reload(); }, 29000);
+    });
+
+    async function fetchCurrentGameIssue() {
+      const apiUrl = 'https://api.bdg88zf.com/api/webapi/GetGameIssue';
+      const requestData = {
+        "typeId": 1,
+        "language": 0,
+        "random": "99faf1d1c84c48049a84475cbaa0a350",
+        "signature": "F83A81877FFAF7DD467A095E82B1DCE5",
+        "timestamp": Math.floor(Date.now() / 1000)
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+          body: JSON.stringify(requestData)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.code === 0) {
+            updateTimer(data.data);
+            // Update prediction in localStorage when a new issue comes in
+            const newPrediction = getRandomPrediction();
+            localStorage.setItem('prediction', newPrediction);
+            document.getElementById('result').textContent = newPrediction;
+          } else {
+            console.error('Failed to fetch game issue:', data.msg);
+          }
+        } else {
+          console.error('Network response was not ok:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    }
+
+    function updateTimer(data) {
+      document.getElementById('period-number').textContent = data.issueNumber;
+      const endTime = new Date(data.endTime).getTime();
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = endTime - now;
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
+        document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
+
+        if (distance < 0) {
+          clearInterval(interval);
+          document.getElementById('minutes').textContent = "00";
+          document.getElementById('seconds').textContent = "00";
+          fetchCurrentGameIssue(); // Refresh current issue
+          fetchPreviousResults();   // Refresh previous results
+        }
+      }, 1000);
+    }
+
+    async function fetchPreviousResults() {
+      const apiUrl = 'https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList';
+      const requestData = {
+        "pageSize": 10,
+        "pageNo": 1,
+        "typeId": 30,
+        "language": 0,
+        "random": "48315d525a224df4836d2688b6b8dc14",
+        "signature": "FB219EE509F98CC88DD7EF298CD031E6",
+        "timestamp": Math.floor(Date.now() / 1000)
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json, text/plain, */*'
+          },
+          body: JSON.stringify(requestData)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.code === 0) {
+            updatePreviousResults(data.data.list);
+          } else {
+            console.error('Failed to fetch previous results:', data.msg);
+          }
+        } else {
+          console.error('Network response was not ok:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    }
+
+    function updatePreviousResults(resultList) {
+      const historyTable = document.getElementById('history-list');
+      historyTable.innerHTML = ''; // Clear existing history
+
+      resultList.forEach(result => {
+        const { issueNumber, number, colour } = result;
+        const size = number <= 4 ? 'SMALL' : 'BIG';  // Determine size based on number
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${issueNumber}</td>
+          <td>${number}</td>
+          <td>${size}</td>
+          <td>${colour.toUpperCase()}</td>
+        `;
+        historyTable.appendChild(row);
+      });
+
+      // Update the latest balls shown
+      const latestResults = resultList.slice(0, 5); // Get the latest 5 results
+      updateBalls(latestResults);
+    }
+
+    function updateBalls(results) {
+      const balls = document.querySelectorAll('.ball');
+
+      results.forEach((result, index) => {
+        if (balls[index]) {
+          balls[index].textContent = result.number;
+          balls[index].className = 'ball';  // Reset classes
+          balls[index].classList.add(result.colour.toLowerCase());  // Add colour class
+        }
+      });
+    }
+  </script></body></html>
