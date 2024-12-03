@@ -1,277 +1,157 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARYON MODS</title>
+    <title>CARYON MOD</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            background-color: #fff;
-            position: relative;
-            overflow: hidden;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1c1f26;
+            color: #fff;
+            margin: 0;
         }
-
-        /* Blob-like background effect */
-        .blob {
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            background: linear-gradient(135deg, #00FFFF, #7FFFD4);
-            border-radius: 200%;
-            filter: blur(110px);
-            z-index: -1;
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #84DE02; /* Gold color for the title */
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.5);
         }
-
-        .blob1 {
-            top: -150px;
-            left: -150px;
-        }
-
-        .blob2 {
-            bottom: -150px;
-            right: -150px;
-        }
-
         .container {
             text-align: center;
-            background-color: rgba(165, 42, 42,); /* Added transparency */
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            width: 300px;
-           
-            
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #2b2f38;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
-
-        h1 {
-            font-size: 20px;
-            color: #FF2052;
-            font-weight: Mono;
-        }
-
-        p {
-            font-size: 16px;
-            color: #FF2052;
-            margin-bottom: 20px;
-        }
-
-        .dev {
-            width: 230px;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 30px;
-            border: 2px solid linear-gradient(135deg, #BCD4E6, #0000FF);
+        .box {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #999;
             text-align: center;
-            font-size: 16px;
-            font-style: bold;
-            color: black;
-            background-color: rgba(34, 34, 34, 0.1); 
+            color: #333;
+            background-color: #FFF3;
         }
-
-        button {
-            width: 200px;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 30px;
-            border: none;
-            font-size: 16px;
+        .period-box {
+            background: linear-gradient(45deg,#00FFFF, #FFFFE0);
+            color: #333;
             font-weight: bold;
+        }
+        .timer-box, .result-box {
+            animation: rgbBoxAnimation 1.5s infinite alternate;
+            color: #00FFFF;
+        }
+        .telegram-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin-top: 20px;
             color: #fff;
+            background-color: #0088cc;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            display: inline-block;
         }
-
-        .btn-result {
-            background-color: #0000FF;
+        .telegram-button:hover {
+            background-color: #005b8c;
         }
-
-        .btn-telegram {
-            background-color: #0000FF;
+        .history {
+            margin-top: 20px;
+            text-align: left;
+            color: Yellow;
         }
-
-        .btn-result:hover, .btn-telegram:hover {
-            background-color: #0000FF;
+        .history-item {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            border: 1px solid #555;
+            color: #FF2052; /* pink color */
+            font-size: 0.9rem;
+        }
+        .history-item span {
+            display: block;
+        }
+        @keyframes rgbBoxAnimation {
+            0% { background-color: #0000FF; }
+            33% { background-color: #8A2BE2; }
+            66% { background-color: #FF007F; }
+            100% { background-color: #ff00ff; }
         }
     </style>
 </head>
 <body>
-    <!-- Blob shapes for background -->
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-
+    <div class="title">CARYON MODS</div>
     <div class="container">
-        <h1>CARYON MODS</h1>
-        <p>CARYON MODS</p>
-        <div class="dev">
-        <span id="minutes">00</span>:<span id="seconds">60</span>
+        <div class="box period-box">Period: <span id="periodNumber">Loading...</span></div>
+        <div class="box timer-box">Timer: <span id="timer">00 : 00</span></div>
+        <div class="box result-box">Result: <span id="result">Waiting...</span></div>
+        <a href="https://t.me/jemshmod" target="_blank" class="telegram-button">Join Telegram Channel</a>
+        <div class="history">
+            <h3>History</h3>
+            <div id="historyList"></div>
         </div>
-        <div class="dev">
-        <div class="id-number" id="period-number">Wait For Period</div>
-        </div>
-        <div class="dev">
-        <div id="result" class="result"></div>
-        
-        </div>
-
-        <button class="btn-telegram" onclick="window.location.href='https://t.me/freehackwithjemsh';">CARYON CHANNEL</button>
     </div>
 
+    <script>
+        const periodNumber = document.getElementById("periodNumber");
+        const timerDisplay = document.getElementById("timer");
+        const resultDisplay = document.getElementById("result");
+        const historyList = document.getElementById("historyList");
 
-  <script>
-    function getRandomPrediction() {
-      const options = ["BIG", "SMALL","SMALL","BIG","SMALL","BIG","BIG","SMALL","BIG","SMALL"];
-      const randomIndex = Math.floor(Math.random() * options.length);
-      return options[randomIndex];
-    }
+        const resultsArray = ["BIG", "BIG", "SMALL", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG", "SMALL","BIG","SMALL","BIG","BIG","SMALL"];
+        let lastPeriod = null;
 
-    document.addEventListener("DOMContentLoaded", function () {
-      // Check localStorage for existing prediction
-      const storedPrediction = localStorage.getItem('prediction');
-      document.getElementById('result').textContent = storedPrediction ? storedPrediction : getRandomPrediction();
+        function updatePeriodAndResult() {
+            const now = new Date();
+            const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+            const seconds = now.getUTCSeconds();
+            const period = 10001 + minutes;
+            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}1000${period}`;
 
-      fetchCurrentGameIssue();
-      fetchPreviousResults();
-      setInterval(fetchPreviousResults, 30000);
-      setTimeout(() => { location.reload(); }, 29000);
-    });
+            if (newPeriodNumber !== lastPeriod) {
+                lastPeriod = newPeriodNumber;
+                periodNumber.textContent = newPeriodNumber;
 
-    async function fetchCurrentGameIssue() {
-      const apiUrl = 'https://api.bdg88zf.com/api/webapi/GetGameIssue';
-      const requestData = {
-        "typeId": 1,
-        "language": 0,
-        "random": "99faf1d1c84c48049a84475cbaa0a350",
-        "signature": "F83A81877FFAF7DD467A095E82B1DCE5",
-        "timestamp": Math.floor(Date.now() / 1000)
-      };
+                // Show result once per period change
+                const randomIndex = Math.floor(Math.random() * resultsArray.length);
+                const result = resultsArray[randomIndex];
+                resultDisplay.textContent = result;
 
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-          body: JSON.stringify(requestData)
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.code === 0) {
-            updateTimer(data.data);
-            // Update prediction in localStorage when a new issue comes in
-            const newPrediction = getRandomPrediction();
-            localStorage.setItem('prediction', newPrediction);
-            document.getElementById('result').textContent = newPrediction;
-          } else {
-            console.error('Failed to fetch game issue:', data.msg);
-          }
-        } else {
-          console.error('Network response was not ok:', response.statusText);
+                // Add to history in a box format
+                const historyItem = document.createElement("div");
+                historyItem.className = "history-item";
+                historyItem.innerHTML = `<span>Period: ${newPeriodNumber}</span><span>Result: ${result}</span>`;
+                historyList.prepend(historyItem);  // Adds the new period at the top
+            }
         }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    }
 
-    function updateTimer(data) {
-      document.getElementById('period-number').textContent = data.issueNumber;
-      const endTime = new Date(data.endTime).getTime();
-      const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = endTime - now;
-
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
-        document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
-
-        if (distance < 0) {
-          clearInterval(interval);
-          document.getElementById('minutes').textContent = "00";
-          document.getElementById('seconds').textContent = "00";
-          fetchCurrentGameIssue(); // Refresh current issue
-          fetchPreviousResults();   // Refresh previous results
+        function updateTimer() {
+            const now = new Date();
+            const remainingSeconds = 60 - now.getUTCSeconds();
+            timerDisplay.textContent = `00 : ${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
         }
-      }, 1000);
-    }
 
-    async function fetchPreviousResults() {
-      const apiUrl = 'https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList';
-      const requestData = {
-        "pageSize": 10,
-        "pageNo": 1,
-        "typeId": 30,
-        "language": 0,
-        "random": "48315d525a224df4836d2688b6b8dc14",
-        "signature": "FB219EE509F98CC88DD7EF298CD031E6",
-        "timestamp": Math.floor(Date.now() / 1000)
-      };
-
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json, text/plain, */*'
-          },
-          body: JSON.stringify(requestData)
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.code === 0) {
-            updatePreviousResults(data.data.list);
-          } else {
-            console.error('Failed to fetch previous results:', data.msg);
-          }
-        } else {
-          console.error('Network response was not ok:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    }
-
-    function updatePreviousResults(resultList) {
-      const historyTable = document.getElementById('history-list');
-      historyTable.innerHTML = ''; // Clear existing history
-
-      resultList.forEach(result => {
-        const { issueNumber, number, colour } = result;
-        const size = number <= 4 ? 'SMALL' : 'BIG';  // Determine size based on number
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${issueNumber}</td>
-          <td>${number}</td>
-          <td>${size}</td>
-          <td>${colour.toUpperCase()}</td>
-        `;
-        historyTable.appendChild(row);
-      });
-
-      // Update the latest balls shown
-      const latestResults = resultList.slice(0, 5); // Get the latest 5 results
-      updateBalls(latestResults);
-    }
-
-    function updateBalls(results) {
-      const balls = document.querySelectorAll('.ball');
-
-      results.forEach((result, index) => {
-        if (balls[index]) {
-          balls[index].textContent = result.number;
-          balls[index].className = 'ball';  // Reset classes
-          balls[index].classList.add(result.colour.toLowerCase());  // Add colour class
-        }
-      });
-    }
-  </script></body></html>
+        // Run update every second
+        setInterval(() => {
+            updateTimer();
+            if (new Date().getUTCSeconds() === 0) {
+                updatePeriodAndResult();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
