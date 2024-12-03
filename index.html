@@ -3,155 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARYON MOD</title>
+    <title>CARYON MODS</title>
     <style>
+        /* General styling */
         body {
             font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            background-color: #1c1f26;
-            color: #fff;
             margin: 0;
         }
-        .title {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #84DE02; /* Gold color for the title */
-            text-align: center;
-            text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.5);
-        }
+
+        /* Container styling */
         .container {
-            text-align: center;
-            width: 80%;
-            max-width: 600px;
+            width: 420px;
             padding: 20px;
-            background-color: #2b2f38;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            background: #0247FE;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
         }
+
+        /* Header styling */
+        h1 {
+            color: #ff0000;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+
+        /* Box styling */
         .box {
-            font-size: 1.5rem;
             margin: 15px 0;
             padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #999;
-            text-align: center;
-            color: #333;
-            background-color: #FFF3;
+            background: linear-gradient(145deg, #D891EF, #1a1a2b);
+            border-radius: 12px;
+            border: 3px solid #0000ff;
+            color: #ff0000;
         }
-        .period-box {
-            background: linear-gradient(45deg,#00FFFF, #FFFFE0);
-            color: #333;
+
+        /* Period and result text */
+        #periodNumber, #currentResult {
+            font-size: 1.2em;
             font-weight: bold;
         }
-        .timer-box, .result-box {
-            animation: rgbBoxAnimation 1.5s infinite alternate;
-            color: #00FFFF;
+
+        /* Timer text */
+        #timer {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
         }
-        .telegram-button {
-            padding: 10px 20px;
-            font-size: 1rem;
+
+        /* History box */
+        .history-box {
+            background: #1a1a2e;
+            border: 4px solid #66FF00;
+            border-radius: 12px;
+            padding: 15px;
             margin-top: 20px;
-            color: #fff;
-            background-color: #0088cc;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #F4BBFF;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 3px solid #66FF00;
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* Button styling */
+        .get-result-btn {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-        }
-        .telegram-button:hover {
-            background-color: #005b8c;
-        }
-        .history {
+            font-weight: bold;
             margin-top: 20px;
-            text-align: left;
-            color: Yellow;
         }
-        .history-item {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 5px 0;
-            border: 1px solid #555;
-            color: #FF2052; /* pink color */
-            font-size: 0.9rem;
+
+        .telegram-btn {
+            padding: 10px 20px;
+            background-color: #0088cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
         }
-        .history-item span {
-            display: block;
-        }
-        @keyframes rgbBoxAnimation {
-            0% { background-color: #0000FF; }
-            33% { background-color: #8A2BE2; }
-            66% { background-color: #FF007F; }
-            100% { background-color: #ff00ff; }
+
+        /* Popup styling */
+        .popup-message {
+            display: none;
+            font-size: 1.1em;
+            color: #66FF00;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="title">CARYON MODS</div>
-    <div class="container">
-        <div class="box period-box">Period: <span id="periodNumber">Loading...</span></div>
-        <div class="box timer-box">Timer: <span id="timer">00 : 00</span></div>
-        <div class="box result-box">Result: <span id="result">Waiting...</span></div>
-        <a href="https://t.me/jemshmod" target="_blank" class="telegram-button">Join Telegram Channel</a>
-        <div class="history">
-            <h3>History</h3>
-            <div id="historyList"></div>
-        </div>
+
+<div class="container">
+    <h1>CARYON MODS</h1>
+
+    <div class="box">
+        <div>Period Number</div>
+        <div id="periodNumber">Loading...</div>
     </div>
 
-    <script>
-        const periodNumber = document.getElementById("periodNumber");
-        const timerDisplay = document.getElementById("timer");
-        const resultDisplay = document.getElementById("result");
-        const historyList = document.getElementById("historyList");
+    <div class="box">
+        <div>Current Result</div>
+        <div id="currentResult">Waiting...</div>
+    </div>
 
-        const resultsArray = ["BIG", "BIG", "SMALL", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG", "SMALL","BIG","SMALL","BIG","BIG","SMALL"];
-        let lastPeriod = null;
+    <div class="box">
+        <div>Timer</div>
+        <div id="timer">00:00</div>
+    </div>
 
-        function updatePeriodAndResult() {
-            const now = new Date();
-            const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-            const seconds = now.getUTCSeconds();
-            const period = 10001 + minutes;
-            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}1000${period}`;
+    <button class="get-result-btn" id="getResultBtn">GET RESULT</button>
+    <div class="popup-message" id="popupMessage">Please wait for the next period number</div>
 
-            if (newPeriodNumber !== lastPeriod) {
-                lastPeriod = newPeriodNumber;
-                periodNumber.textContent = newPeriodNumber;
+    <div class="history-box">
+        <div>History</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Period Number</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody id="history"></tbody>
+        </table>
+    </div>
 
-                // Show result once per period change
-                const randomIndex = Math.floor(Math.random() * resultsArray.length);
-                const result = resultsArray[randomIndex];
-                resultDisplay.textContent = result;
+    <a href="https://t.me/jemshmod" target="_blank">
+        <button class="telegram-btn">TELEGRAM CHANNEL</button>
+    </a>
+</div>
 
-                // Add to history in a box format
-                const historyItem = document.createElement("div");
-                historyItem.className = "history-item";
-                historyItem.innerHTML = `<span>Period: ${newPeriodNumber}</span><span>Result: ${result}</span>`;
-                historyList.prepend(historyItem);  // Adds the new period at the top
-            }
+<script>
+    const periodNumberElement = document.getElementById('periodNumber');
+    const timerElement = document.getElementById('timer');
+    const currentResultElement = document.getElementById('currentResult');
+    const historyElement = document.getElementById('history');
+    const getResultBtn = document.getElementById('getResultBtn');
+    const popupMessage = document.getElementById('popupMessage');
+
+    const results = [
+        'BIG', 'BIG', 'BIG', 'SMALL', 'BIG', 'SMALL', 'SMALL', 'BIG', 'BIG', 'SMALL',
+        'BIG', 'BIG', 'SMALL', 'BIG', 'SMALL', 'BIG', 'SMALL', 'BIG', 'SMALL', 'BIG'
+    ];
+
+    let currentResultIndex = -1;
+    let lastPeriod = null;
+
+    // Function to update period and result
+    function updatePeriodAndResult() {
+        const now = new Date();
+        const utcYear = now.getUTCFullYear();
+        const utcMonth = String(now.getUTCMonth() + 1).padStart(2, '0');
+        const utcDay = String(now.getUTCDate()).padStart(2, '0');
+        const totalMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+        const periodNumber = 10001 + totalMinutes;
+        const periodString = `${utcYear}${utcMonth}${utcDay}1000${periodNumber}`;
+
+        periodNumberElement.textContent = periodString;
+        return periodString;
+    }
+
+    // Function to handle the "Get Result" button click
+    function displayResult() {
+        const periodNumber = updatePeriodAndResult();
+
+        // Check if clicked within the same period
+        if (periodNumber === lastPeriod) {
+            popupMessage.style.display = 'block';
+            return;
         }
 
-        function updateTimer() {
-            const now = new Date();
-            const remainingSeconds = 60 - now.getUTCSeconds();
-            timerDisplay.textContent = `00 : ${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
-        }
+        // Hide popup, update result, and add to history
+        popupMessage.style.display = 'none';
+        lastPeriod = periodNumber;
 
-        // Run update every second
+        // Cycle through the results
+        currentResultIndex = (currentResultIndex + 1) % results.length;
+        const result = results[currentResultIndex];
+        currentResultElement.textContent = result;
+
+        // Add to history table
+        const row = document.createElement('tr');
+        const periodCell = document.createElement('td');
+        const resultCell = document.createElement('td');
+        periodCell.textContent = periodNumber;
+        resultCell.textContent = result;
+        row.appendChild(periodCell);
+        row.appendChild(resultCell);
+        historyElement.prepend(row);
+    }
+
+    // Timer countdown
+    function startTimer() {
         setInterval(() => {
-            updateTimer();
-            if (new Date().getUTCSeconds() === 0) {
+            const now = new Date();
+            const remainingSeconds = 60 - (now.getUTCSeconds() % 60);
+            timerElement.textContent = `00:${String(remainingSeconds).padStart(2, '0')}`;
+
+            // Update period and result every 60 seconds
+            if (remainingSeconds === 60) {
                 updatePeriodAndResult();
             }
         }, 1000);
-    </script>
+    }
+
+    // Event listener for the "Get Result" button
+    getResultBtn.addEventListener('click', displayResult);
+    window.onload = startTimer;
+</script>
+
 </body>
 </html>
